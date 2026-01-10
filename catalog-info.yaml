@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: human-resources-management-system
+  description: A human resources management system to manage employee data and processes.
+  tags:
+    - hr
+    - backend
+    - java
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: Minecakir/HumanResourcesManagementSystem
+spec:
+  type: service
+  lifecycle: production
+  owner: team-human-resources
+  system: project-x
+
