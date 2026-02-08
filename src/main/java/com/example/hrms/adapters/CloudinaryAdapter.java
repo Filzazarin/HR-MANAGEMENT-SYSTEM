@@ -14,25 +14,31 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
-public class CloudinaryAdapter {
-    static Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-            "cloud_name", "",//YOUR CLOUD NAME
-            "api_key", "",//YOUR API KEY
-            "api_secret", "",//YOUR API SECRET
+import com.example.hrms.core.services.CloudinaryService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CloudinaryAdapter implements CloudinaryService {
+    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "", // YOUR CLOUD NAME
+            "api_key", "", // YOUR API KEY
+            "api_secret", "", // YOUR API SECRET
             "secure", true));
 
-    public static DataResult<Object> uploadImage(MultipartFile multipartFile) throws IOException {
+    @Override
+    public DataResult<Object> uploadImage(MultipartFile multipartFile) throws IOException {
         File file = convert(multipartFile);
         Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
         return new SuccessDataResult<Object>(uploadResult.get("url"));
     }
 
-    public static Result delete(String id) throws IOException {
+    @Override
+    public Result delete(String id) throws IOException {
         Map result = cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
         return new SuccessResult(result.toString());
     }
 
-    public static File convert(MultipartFile multipartFile) throws IOException {
+    public File convert(MultipartFile multipartFile) throws IOException {
         File file = new File(multipartFile.getOriginalFilename());
         FileOutputStream fo = new FileOutputStream(file);
         fo.write(multipartFile.getBytes());

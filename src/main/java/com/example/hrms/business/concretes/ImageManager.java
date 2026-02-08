@@ -1,6 +1,6 @@
 package com.example.hrms.business.concretes;
 
-import com.example.hrms.adapters.CloudinaryAdapter;
+import com.example.hrms.core.services.CloudinaryService;
 import com.example.hrms.business.abstracts.ImageService;
 import com.example.hrms.core.utilities.results.DataResult;
 import com.example.hrms.core.utilities.results.Result;
@@ -15,16 +15,18 @@ import java.io.IOException;
 @Service
 public class ImageManager implements ImageService {
     private ImageDao imageDao;
+    private CloudinaryService cloudinaryService;
 
     @Autowired
-    public ImageManager(ImageDao imageDao) {
+    public ImageManager(ImageDao imageDao, CloudinaryService cloudinaryService) {
         super();
         this.imageDao = imageDao;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
     public Result add(MultipartFile file) throws IOException {
-        DataResult<Object> result = CloudinaryAdapter.uploadImage(file);
+        DataResult<Object> result = this.cloudinaryService.uploadImage(file);
         return new SuccessResult(result.getData().toString());
     }
 }
